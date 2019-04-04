@@ -23,6 +23,8 @@ $app->get('/', function() {
 
 });
 
+
+//tela de administrador
 $app->get('/admin', function() {
 
 	User::verifyLogin();
@@ -33,6 +35,8 @@ $app->get('/admin', function() {
 
 });
 
+
+//tela inicial de login do administrador 
 $app->get('/admin/login', function() {
     
 	$page = new PageAdmin([
@@ -44,6 +48,8 @@ $app->get('/admin/login', function() {
 
 });
 
+
+// rota de lgoin do administrador
 $app->post('/admin/login', function() {
     
 	User::login($_POST["login"],$_POST["password"]);
@@ -53,12 +59,63 @@ $app->post('/admin/login', function() {
 });
 
 
+// rota de logout do sistema
 $app->get('/admin/logout',function(){
 
 	User::logout();
 
 	header("Location:  /admin/login");
 	exit;
+});
+
+
+//tela que vai listar todos os usuários
+$app->get('/admin/users',function(){
+
+	User::verifyLogin();
+
+	$users = User::listAll();
+
+	$page = new PageAdmin();
+
+	$page->setTpl("users",array(
+		"users" => $users
+	));
+});
+
+//tela de criação de usuário
+$app->get('/admin/users/create',function(){
+
+	User::verifyLogin();
+
+	$page = new PageAdmin();
+
+	$page->setTpl("users-create");
+});
+
+$app->get("/admin/users/:iduser/delete",function($iduser){
+	User::verifyLogin();
+});
+
+//tela de update de ususário
+$app->get('/admin/users/:iduser',function($iduser){    //passasse o id do usuario na rota como boas praticas para acessar aquele usuário em especifico 
+
+	User::verifyLogin();
+
+	$page = new PageAdmin();
+
+	$page->setTpl("users-update");
+});
+
+//rota para salvar o usuário no banco
+$app->post("/admin/users/create",function($iduser){
+	User::verifyLogin();
+
+});
+
+//rota para salvar a edisão do usuário no banco
+$app->post("/admin/users/:iduser",function($iduser){
+	User::verifyLogin();
 });
 
 

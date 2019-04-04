@@ -18,30 +18,30 @@ class Page
 	{
 		$this->options = array_merge($this->defaults,$opts);
 
-		
 
 		$config = array(
 
 			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"].$tpl_dir, #$_SERVER["DOCUMENT_ROOT"] tras o diretório raiz do servidor
-			"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/views-cache",
+			"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
 			"debug"         => false // set to false to improve the speed
 		);
 
 		Tpl::configure( $config );
 
-		$this->tpl = new Tpl;
+		$this->tpl = new Tpl();
 
 		$this->setData($this->options["data"]);
 
-		
+	
 		if($this->options["header"] === true) $this->tpl->draw("header");
 
 	}
 
 	private function setData($data=array())
 	{
-		foreach ($data as $key => $value) {
-			$this->tpl->assing($key,$value);
+		foreach ($data as $key => $value) 
+		{
+			$this->tpl->assign($key,$value);
 		}
 	}
 
